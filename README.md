@@ -1,15 +1,8 @@
 # Slim3 Session Middleware
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/66698967b6ec44949eb30795f09a435e)](https://www.codacy.com/app/andrewdyer/slim3-session-middleware?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=andrewdyer/slim3-session-middleware&amp;utm_campaign=Badge_Grade)
-[![Latest Stable Version](https://poser.pugx.org/andrewdyer/slim3-session-middleware/version)](https://packagist.org/packages/andrewdyer/slim3-session-middleware)
-[![Latest Unstable Version](https://poser.pugx.org/andrewdyer/slim3-session-middleware/v/unstable)](//packagist.org/packages/andrewdyer/slim3-session-middleware)
-[![License](https://poser.pugx.org/andrewdyer/slim3-session-middleware/license)](https://packagist.org/packages/andrewdyer/slim3-session-middleware)
-[![Total Downloads](https://poser.pugx.org/andrewdyer/slim3-session-middleware/downloads)](https://packagist.org/packages/andrewdyer/slim3-session-middleware)
-[![Daily Downloads](https://poser.pugx.org/andrewdyer/slim3-session-middleware/d/daily)](https://packagist.org/packages/andrewdyer/slim3-session-middleware)
-[![Monthly Downloads](https://poser.pugx.org/andrewdyer/slim3-session-middleware/d/monthly)](https://packagist.org/packages/andrewdyer/slim3-session-middleware)
-[![composer.lock available](https://poser.pugx.org/andrewdyer/slim3-session-middleware/composerlock)](https://packagist.org/packages/andrewdyer/slim3-session-middleware)
-
 Simple session middleware for the Slim Framework. Also included is a useful helper class that allows PHP built-in session management.
+
+Forked from https://github.com/andrewdyer/slim3-session-middleware
 
 ## License
 
@@ -18,7 +11,7 @@ Licensed under MIT. Totally free for private or commercial projects.
 ## Installation
 
 ```bash
-composer require andrewdyer/slim3-session-middleware
+composer require k-ko/slim3-session-middleware
 ```
 
 ## Usage
@@ -28,7 +21,7 @@ composer require andrewdyer/slim3-session-middleware
 
 $app = new \Slim\App();
 
-$app->add(new \Anddye\Middleware\SessionMiddleware([
+$app->add(new \Middleware\SessionMiddleware([
     'autorefresh'   => true,
     'name'          => 'myapp_session',
     'lifetime'      => '1 hour',
@@ -36,9 +29,9 @@ $app->add(new \Anddye\Middleware\SessionMiddleware([
 
 $app->get('/', function (Request $request, Response $response) use ($container) {
     if (!isset($container['session']['loggedIn'])) {
-        //...
+        // ...
     }
-    ///..
+    // ...
 });
 
 $app->run();
@@ -61,13 +54,13 @@ $app->run();
 
 ### Session Helper
 
-The `\Anddye\Session\Helper` class can be attached to your app container:
+The `\Session\Helper` class can be attached to your app container:
 
 ```php
 $container = $app->getContainer();
 
 $container['session'] = function ($container) {
-    return new \Anddye\Session\Helper();
+    return new \Session\Helper();
 };
 ```
 
@@ -76,7 +69,7 @@ The helper class can be used to check if a session variable exists in addition t
 ```php
 $app->get('/', function (Request $request, Response $response) use ($container) {
     // Check if variable exists
-    $exists = $container['session']->exists('my_key');
+    $exists = $container['session']->has('my_key');
     $exists = isset($container['session']->my_key);
     $exists = isset($container['session']['my_key']);
 
@@ -85,13 +78,16 @@ $app->get('/', function (Request $request, Response $response) use ($container) 
     $value = $container['session']->my_key;
     $value = $container['session']['my_key'];
 
+    // Take variable value out from session
+    $value = $container['session']->take('my_key', 'default');
+
     // Set variable value
     $container['session']->set('my_key', 'my_value');
     $container['session']->my_key = 'my_value';
     $container['session']['my_key'] = 'my_value';
 
-    // Delete variable
-    $container['session']->delete('my_key');
+    // Remove variable
+    $container['session']->remove('my_key');
     unset($container['session']->my_key);
     unset($container['session']['my_key']);
 });
@@ -99,11 +95,7 @@ $app->get('/', function (Request $request, Response $response) use ($container) 
 
 ## Support
 
-If you are having general issues with this library, then please feel free to contact me on [Twitter](https://twitter.com/andyer92).
-
-If you believe you have found an issue, please report it using the [issue tracker](https://github.com/andrewdyer/slim3-session-middleware/issues), or better yet, fork the repository and submit a pull request.
-
-If you're using this package, I'd love to hear your thoughts!
+If you believe you have found an issue, please report it using the [issue tracker](https://github.com/k-ko/slim3-session-middleware/issues), or better yet, fork the repository and submit a pull request.
 
 ## Useful Links
 

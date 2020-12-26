@@ -1,5 +1,5 @@
 {
-    "name": "andrewdyer/slim3-session-middleware",
+    "name": "k-ko/slim3-session-middleware",
     "description": "Session middleware and helper for Slim 3.",
     "type": "library",
     "keywords": [
@@ -7,7 +7,7 @@
         "session",
         "middleware"
     ],
-    "homepage": "https://github.com/andrewdyer/slim3-session-middleware",
+    "homepage": "https://github.com/k-ko/slim3-session-middleware",
     "license": "MIT",
     "authors": [
         {
@@ -15,10 +15,15 @@
             "email": "andrewdyer@outlook.com",
             "homepage": "http://andrewdyer.rocks",
             "role": "developer"
+        },
+        {
+            "name": "Knut Kohl",
+            "email": "github@knutkohl.de",
+            "role": "developer"
         }
     ],
     "support": {
-        "source": "https://github.com/andrewdyer/slim3-session-middleware.git"
+        "source": "https://github.com/k-ko/slim3-session-middleware.git"
     },
     "require": {
         "php": ">=5.5.0",
@@ -26,7 +31,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Anddye\\": "src/"
+            "": "src/"
         }
     },
     "minimum-stability": "stable",

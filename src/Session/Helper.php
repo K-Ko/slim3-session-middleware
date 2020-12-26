@@ -1,6 +1,6 @@
 <?php
 
-namespace Anddye\Session;
+namespace Session;
 
 /**
  * Class Helper.
@@ -24,7 +24,7 @@ class Helper
      */
     public function __isset(string $key)
     {
-        return $this->exists($key);
+        return $this->has($key);
     }
 
     /**
@@ -43,9 +43,9 @@ class Helper
      *
      * @return bool
      */
-    public function __unset(string $key)
+    public function __unset(string $key): bool
     {
-        return $this->delete($key);
+        return $this->remove($key);
     }
 
     /**
@@ -53,9 +53,9 @@ class Helper
      *
      * @return bool
      */
-    public function delete(string $key): bool
+    public function remove(string $key): bool
     {
-        if ($this->exists($key)) {
+        if ($this->has($key)) {
             unset($_SESSION[$key]);
 
             return true;
@@ -77,7 +77,7 @@ class Helper
      *
      * @return bool
      */
-    public function exists(string $key): bool
+    public function has(string $key): bool
     {
         return array_key_exists($key, $_SESSION);
     }
@@ -90,7 +90,7 @@ class Helper
      */
     public function get(string $key, $default = null)
     {
-        if ($this->exists($key)) {
+        if ($this->has($key)) {
             return $_SESSION[$key];
         }
 
@@ -98,13 +98,32 @@ class Helper
     }
 
     /**
+     * Take a value from session
+     *
      * @param string $key
-     * @param mixed  $value
+     * @param mixed  $default
      *
      * @return mixed
      */
-    public function set(string $key, $value)
+    public function take(string $key, $default = null)
     {
-        return $_SESSION[$key] = $value;
+        $result = $this->get($key, $default);
+
+        $this->remove($key);
+
+        return $result;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return Session\Helper For fluid interface
+     */
+    public function set(string $key, $value): Helper
+    {
+        $_SESSION[$key] = $value;
+
+        return $this;
     }
 }

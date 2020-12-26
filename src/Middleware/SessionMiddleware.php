@@ -1,6 +1,6 @@
 <?php
 
-namespace Anddye\Middleware;
+namespace Middleware;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -99,8 +99,17 @@ class SessionMiddleware
 
         // Refresh session cookie when sessions are enabled, but none exists.
         $sessionsEnabledNoneExists = PHP_SESSION_NONE === session_status();
+
         if ($sessionsEnabledNoneExists and $this->auto_refresh and isset($_COOKIE[$this->name])) {
-            setcookie($this->name, $_COOKIE[$this->name], time() + $this->lifetime, $this->path, $this->domain, $this->secure, $this->httponly);
+            setcookie(
+                $this->name,
+                $_COOKIE[$this->name],
+                time() + $this->lifetime,
+                $this->path,
+                $this->domain,
+                $this->secure,
+                $this->httponly
+            );
         }
 
         // Set the current session name.

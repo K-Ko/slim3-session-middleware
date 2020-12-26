@@ -21,18 +21,19 @@ composer require k-ko/slim3-session-middleware
 
 $app = new \Slim\App();
 
-$app->add(new \Middleware\SessionMiddleware([
-    'autorefresh'   => true,
-    'name'          => 'myapp_session',
-    'lifetime'      => '1 hour',
-]));
-
 $app->get('/', function (Request $request, Response $response) use ($container) {
     if (!isset($container['session']['loggedIn'])) {
         // ...
     }
     // ...
 });
+
+// Add as LAST middleware to run 1st
+$app->add(new \Middleware\SessionMiddleware([
+    'autorefresh'   => true,
+    'name'          => 'myapp_session',
+    'lifetime'      => '1 hour',
+]));
 
 $app->run();
 ```

@@ -1,11 +1,19 @@
 <?php
-
+/**
+ *
+ */
 namespace Session;
+
+/**
+ *
+ */
+use ArrayAccess;
+use Exception;
 
 /**
  * Class Helper.
  */
-class Helper
+class Helper implements ArrayAccess
 {
     /**
      * @param string $key
@@ -125,5 +133,32 @@ class Helper
         $_SESSION[$key] = $value;
 
         return $this;
+    }
+
+    /**
+     * ArrayAccess
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            throw new Exception('Missing key', 1);
+        }
+
+        $this->set($offset, $value);
+    }
+
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
     }
 }

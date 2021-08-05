@@ -1,14 +1,9 @@
 <?php
-/**
- *
- */
+
 namespace Middleware;
 
-/**
- *
- */
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Class SessionMiddleware
@@ -46,13 +41,13 @@ class SessionMiddleware
     }
 
     /**
-     * @param Request  $request  PSR7 request
-     * @param Response $response PSR7 response
-     * @param callable $next     Next middleware
+     * @param Psr\Http\Message\ServerRequestInterface $request  PSR7 request
+     * @param Psr\Http\Message\ResponseInterface      $response PSR7 response
+     * @param callable                                $next     Next middleware
      *
      * @return Response
      */
-    public function __invoke(Request $request, Response $response, callable $next)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
         // Set the session cookie parameters.
         session_set_cookie_params($this->lifetime, $this->path, $this->domain, $this->secure, $this->httponly);
@@ -89,7 +84,7 @@ class SessionMiddleware
         // Start a session if sessions are enabled, but none exist.
         if ($sessionsEnabledNoneExists) {
             session_start();
-            $this->autorefresh && session_regenerate_id();
+            $this->autorefresh && session_regenerate_id(true);
         }
 
         return $next($request, $response);

@@ -33,6 +33,8 @@ $app->add(new \Middleware\SessionMiddleware([
     'autorefresh'   => true,
     'name'          => 'myapp_session',
     'lifetime'      => '1 hour',
+    // optional:
+    'handler' => new \Session\MySQLiSessionHandler($container['mysqli'])
 ]));
 
 $app->run();
@@ -40,18 +42,17 @@ $app->run();
 
 ### Supported Options
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `autorefresh` | boolean | `false` | If you want session to be refresh when user activity is made (interaction with server). |
-| `domain` | tring | `null` | Cookie domain, for example 'www.php.net'. To make cookies visible on  all subdomains then the domain must be prefixed with a dot like '.php.net'. |
-| `handler` | mixed | `null` | Custom session handler class or object. Must implement `SessionHandlerInterface` as required by PHP. |
-| `httponly` | boolean | `false` | If set to true then PHP will attempt to send the httponly flag when setting the session cookie. |
-| `ini_settings` | array | `null` | Associative array of custom session configuration. |
-| `lifetime` | int or string | `"20 minutes"` | The lifetime of the session cookie. Can be set to any value which `strtotime` can parse. |
-| `name` | string | `"session"` | Name for the session cookie. Defaults to `session` instead of PHP's `PHPSESSID`. |
-| `path` |string | `"/"` | The path on the domain where the cookie will work. Use a single slash ('/') for all paths on the domain. |
-| `secure` | boolean | `false` | Cookies will only be sent over secure connections if true. |
-
+| Option         | Type          | Default        | Description                                                                                                                                      |
+| -------------- | ------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `autorefresh`  | boolean       | `false`        | If you want session to be refresh when user activity is made (interaction with server).                                                          |
+| `domain`       | tring         | `null`         | Cookie domain, for example 'www.php.net'. To make cookies visible on all subdomains then the domain must be prefixed with a dot like '.php.net'. |
+| `handler`      | mixed         | `null`         | Custom session handler class or object. Must implement `SessionHandlerInterface` as required by PHP.                                             |
+| `httponly`     | boolean       | `false`        | If set to true then PHP will attempt to send the httponly flag when setting the session cookie.                                                  |
+| `ini_settings` | array         | `null`         | Associative array of custom session configuration.                                                                                               |
+| `lifetime`     | int or string | `"20 minutes"` | The lifetime of the session cookie. Can be set to any value which `strtotime` can parse.                                                         |
+| `name`         | string        | `"session"`    | Name for the session cookie. Defaults to `session` instead of PHP's `PHPSESSID`.                                                                 |
+| `path`         | string        | `"/"`          | The path on the domain where the cookie will work. Use a single slash ('/') for all paths on the domain.                                         |
+| `secure`       | boolean       | `false`        | Cookies will only be sent over secure connections if true.                                                                                       |
 
 ### Session Helper
 
@@ -100,4 +101,4 @@ If you believe you have found an issue, please report it using the [issue tracke
 
 ## Useful Links
 
-* [Slim Framework](https://www.slimframework.com)
+-   [Slim Framework](https://www.slimframework.com)

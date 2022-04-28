@@ -87,7 +87,11 @@ class SessionMiddleware
             $this->autorefresh && session_regenerate_id(true);
         }
 
-        return $next($request, $response);
+        $response = $next($request, $response);
+
+        session_write_close();
+
+        return $response;
     }
 
     // ----------------------------------------------------------------------

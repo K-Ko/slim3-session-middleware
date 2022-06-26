@@ -93,21 +93,21 @@ class Helper implements ArrayAccess
     /**
      * Increment a value
      */
-    public function inc(string $key, int $step = 1): Helper
+    public function inc(string $key, int $step = 1): int
     {
         $_SESSION[$key] = (int) ($_SESSION[$key] ?? 0) + $step;
 
-        return $this;
+        return $_SESSION[$key];
     }
 
     /**
      * Decrement a value
      */
-    public function dec(string $key, int $step = 1): Helper
+    public function dec(string $key, int $step = 1): int
     {
         $_SESSION[$key] = (int) ($_SESSION[$key] ?? 0) - $step;
 
-        return $this;
+        return $_SESSION[$key];
     }
 
     /*

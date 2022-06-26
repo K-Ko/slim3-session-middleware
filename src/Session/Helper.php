@@ -1,12 +1,15 @@
 <?php
+
 /**
  *
  */
+
 namespace Session;
 
 /**
  *
  */
+
 use ArrayAccess;
 use Exception;
 
@@ -15,52 +18,26 @@ use Exception;
  */
 class Helper implements ArrayAccess
 {
-    /**
-     * @param string $key
-     *
-     * @return mixed
-     */
     public function __get(string $key)
     {
         return $this->get($key);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function __isset(string $key)
+    public function __isset(string $key): bool
     {
         return $this->has($key);
     }
 
-    /**
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return mixed
-     */
     public function __set(string $key, $value)
     {
-        return $this->set($key, $value);
+        $this->set($key, $value);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function __unset(string $key): bool
+    public function __unset(string $key)
     {
-        return $this->remove($key);
+        $this->remove($key);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
     public function remove(string $key): bool
     {
         if ($this->has($key)) {
@@ -80,22 +57,11 @@ class Helper implements ArrayAccess
         session_destroy();
     }
 
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
     public function has(string $key): bool
     {
         return array_key_exists($key, $_SESSION);
     }
 
-    /**
-     * @param string $key
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
     public function get(string $key, $default = null)
     {
         if ($this->has($key)) {
@@ -107,27 +73,16 @@ class Helper implements ArrayAccess
 
     /**
      * Take a value from session
-     *
-     * @param string $key
-     * @param mixed  $default
-     *
-     * @return mixed
      */
     public function take(string $key, $default = null)
     {
-        $result = $this->get($key, $default);
+        $value = $this->get($key, $default);
 
         $this->remove($key);
 
-        return $result;
+        return $value;
     }
 
-    /**
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return Session\Helper For fluid interface
-     */
     public function set(string $key, $value): Helper
     {
         $_SESSION[$key] = $value;
@@ -136,9 +91,30 @@ class Helper implements ArrayAccess
     }
 
     /**
+     * Increment a value
+     */
+    public function inc(string $key, int $step = 1): Helper
+    {
+        $_SESSION[$key] = (int) ($_SESSION[$key] ?? 0) + $step;
+
+        return $this;
+    }
+
+    /**
+     * Decrement a value
+     */
+    public function dec(string $key, int $step = 1): Helper
+    {
+        $_SESSION[$key] = (int) ($_SESSION[$key] ?? 0) - $step;
+
+        return $this;
+    }
+
+    /*
      * ArrayAccess
      */
-    public function offsetSet($offset, $value)
+
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             throw new Exception('Missing key', 1);
@@ -147,12 +123,12 @@ class Helper implements ArrayAccess
         $this->set($offset, $value);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }

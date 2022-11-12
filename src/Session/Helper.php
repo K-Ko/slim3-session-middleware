@@ -59,7 +59,7 @@ class Helper implements ArrayAccess
 
     public function has(string $key): bool
     {
-        return array_key_exists($key, $_SESSION);
+        return array_key_exists($key, $_SESSION ?? []);
     }
 
     public function get(string $key, $default = null)

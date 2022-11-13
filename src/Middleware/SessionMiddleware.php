@@ -38,17 +38,7 @@ class SessionMiddleware
                 'session.gc_maxlifetime' => $this->lifetime * 2,
             ]);
         }
-    }
 
-    /**
-     * @param Psr\Http\Message\ServerRequestInterface $request  PSR7 request
-     * @param Psr\Http\Message\ResponseInterface      $response PSR7 response
-     * @param callable                                $next     Next middleware
-     *
-     * @return Response
-     */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
-    {
         // Set the session cookie parameters.
         session_set_cookie_params($this->lifetime, $this->path, $this->domain, $this->secure, $this->httponly);
 
@@ -86,7 +76,17 @@ class SessionMiddleware
             session_start();
             $this->autorefresh && session_regenerate_id(true);
         }
+    }
 
+    /**
+     * @param Psr\Http\Message\ServerRequestInterface $request  PSR7 request
+     * @param Psr\Http\Message\ResponseInterface      $response PSR7 response
+     * @param callable                                $next     Next middleware
+     *
+     * @return Response
+     */
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+    {
         $response = $next($request, $response);
 
         session_write_close();

@@ -27,6 +27,14 @@ class Helper implements ArrayAccess
         $this->remove($key);
     }
 
+    /**
+     * Update the current session id with a newly generated one
+     *
+     * @link https://php.net/manual/en/function.session-regenerate-id.php
+     *
+     * @param  bool $delete_old_session Whether to delete the old associated session file or not
+     * @return bool true on success or false on failure
+     */
     public function regenerate(bool $delete_old_session = false): bool
     {
         return session_regenerate_id($delete_old_session);
@@ -34,6 +42,9 @@ class Helper implements ArrayAccess
 
     /**
      * Destroys all data registered to a session.
+     *
+     * @link https://php.net/manual/en/function.session-destroy.php
+     * @return bool true on success or false on failure
      */
     public function destroy(): bool
     {

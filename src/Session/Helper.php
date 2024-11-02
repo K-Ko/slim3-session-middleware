@@ -27,6 +27,11 @@ class Helper implements ArrayAccess
         $this->remove($key);
     }
 
+    public function regenerate(bool $delete_old_session = false): bool
+    {
+        return session_regenerate_id($delete_old_session);
+    }
+
     /**
      * Destroys all data registered to a session.
      */
